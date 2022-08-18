@@ -4,6 +4,8 @@ import Nav from "react-bootstrap/Nav";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGamepad } from "@fortawesome/free-solid-svg-icons";
 
+import CartWidget from "../CartWidget/CartWidget";
+
 const NavBar = () => {
   let brandName = "Gamer Store";
   let categories = [
@@ -30,6 +32,8 @@ const NavBar = () => {
             </Nav.Link>
           ))}
         </Nav>
+
+        <Navbar.Text><CartWidget></CartWidget></Navbar.Text>
       </Container>
     </Navbar>
   );
