@@ -33,7 +33,7 @@ const NavBar = () => {
           ))}
         </Nav>
 
-        <Navbar.Text><CartWidget></CartWidget></Navbar.Text>
+        <Navbar.Text><CartWidget cartCount={40}/></Navbar.Text>
       </Container>
     </Navbar>
   );
