@@ -1,3 +1,14 @@
+// change the theme
+$theme-colors: (
+  "primary": #2AB7CA,
+  "secondary": #E6E6EA,
+  "danger": #FE4A49,
+  "warning": #FED766,
+  "success": #4C5B5C
+);
+
+@import '~bootstrap/scss/bootstrap.scss';
+
 .clickable {
     cursor: pointer;
 }
