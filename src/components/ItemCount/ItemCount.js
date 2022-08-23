@@ -27,7 +27,7 @@ const ItemCount = ({ stock, initial = 0, onAdd }) => {
                 <h4 className="px-4 m-0">{quantity}</h4>
                 <Button variant="outline-primary" onClick={handleAdd}><FontAwesomeIcon icon={faPlus} /></Button>
             </div>
-            <Button disabled={!stock || !quantity} variant="outline-primary" onClick={() => onAdd(quantity)}>{addToCartText}</Button>
+            <Button disabled={!quantity} variant="outline-primary" onClick={() => onAdd(quantity)}>{addToCartText}</Button>
         </div>
     );
 }
