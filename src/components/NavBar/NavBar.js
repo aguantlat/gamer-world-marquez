@@ -15,13 +15,13 @@ const NavBar = () => {
   ];
 
   return (
-    <Navbar bg="light">
+    <Navbar bg="secondary">
       <Container>
         <Navbar.Brand href="#home" className="d-flex align-items-center">
           <FontAwesomeIcon
             className="m-2"
             icon={faGamepad}
-            color="lightgreen"
+            color="#2AB7CA"
           />
           <span>{brandName}</span>
         </Navbar.Brand>
