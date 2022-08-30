@@ -21,7 +21,7 @@ const ItemCount = ({ stock, initial = 0, onAdd }) => {
     }
 
     return (
-        <div className="d-flex flex-column w-25 p-2">
+        <div className="d-flex flex-column p-2">
             <div className="d-flex align-items-center justify-content-between pb-3">
                 <Button variant="outline-primary" onClick={handleSubtract}><FontAwesomeIcon icon={faMinus} /></Button>
                 <h4 className="px-4 m-0">{quantity}</h4>
