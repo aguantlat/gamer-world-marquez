@@ -1,18 +1,30 @@
 import { useEffect, useState } from "react";
+import Container from "react-bootstrap/Container";
+
 import getItem from "../../helpers/getItem";
 import ItemDetail from "../ItemDetail/ItemDetail";
+import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 
 const ItemDetailContainer = () => {
   const [item, setItem] = useState([]);
+  const [loading, setLoading] = useState(false);
+
   const mockId = 5;
 
   useEffect(() => {
-    getItem(mockId).then((item) => {
-      setItem(item);
-    });
-  });
+    setLoading(true);
+    getItem(mockId)
+      .then((item) => {
+        setItem(item);
+      })
+      .finally(() => setLoading(false));
+  }, []);
 
-  return <>{item && <ItemDetail item={item} />} </>;
+  return (
+    <Container>
+      {loading ? <LoadingSpinner /> : <ItemDetail item={item} />}
+    </Container>
+  );
 };
 
 export default ItemDetailContainer;
