@@ -3,7 +3,7 @@ import Spinner from "react-bootstrap/Spinner";
 
 const LoadingSpinner = () => {
   return (
-    <Row className="justify-content-md-center">
+    <Row className="pt-5 h-100 justify-content-md-center">
       <Spinner animation="border" variant="primary" />
     </Row>
   );
