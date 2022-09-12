@@ -1,11 +1,17 @@
+import { useState } from "react";
+
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import Button from 'react-bootstrap/Button';
+import { Link } from "react-router-dom";
 
 import ItemCount from "../ItemCount/ItemCount";
+import StockIndicator from "../StockIndicator/StockIndicator";
 
 const ItemDetail = ({ item }) => {
-  const { name, imgUrl, price, description, stock, quantity } = item;
-  const showQuantity = (quantity) => alert(`Añadiste ${quantity} items.`);
+  const [quantity, setQuantity] = useState(0);
+  const { name, imgUrl, price, description, stock } = item;
+  const showQuantity = (q) => setQuantity(q);
 
   return (
     <Row className="pt-5">
@@ -16,12 +22,13 @@ const ItemDetail = ({ item }) => {
         <div className="d-flex flex-column">
           <div className="d-fkex flex-column px-2">
             <h4> {name}</h4>
+            <StockIndicator stock={stock}></StockIndicator>
             <h3> ${price} </h3>
             <p>
               {description}
             </p>
           </div>
-          <ItemCount stock={stock} initial={quantity} onAdd={showQuantity}></ItemCount>
+          {quantity > 0 ?  <Link to={'/cart'}><Button className="w-100" variant="primary">Finalizar compra </Button></Link> : <ItemCount stock={stock} onAdd={showQuantity}></ItemCount>}
         </div>
       </Col>
     </Row>
