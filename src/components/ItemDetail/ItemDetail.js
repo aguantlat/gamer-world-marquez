@@ -1,17 +1,28 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import Button from 'react-bootstrap/Button';
+import Button from "react-bootstrap/Button";
 import { Link } from "react-router-dom";
+
+import { CartContext } from "../../context/CartContext";
 
 import ItemCount from "../ItemCount/ItemCount";
 import StockIndicator from "../StockIndicator/StockIndicator";
 
 const ItemDetail = ({ item }) => {
   const [quantity, setQuantity] = useState(0);
+  const { addItem } = useContext(CartContext);
   const { name, imgUrl, price, description, stock } = item;
-  const showQuantity = (q) => setQuantity(q);
+  const addToCart = (value) => {
+    setQuantity(value);
+
+    if (value <= 0) {
+      return;
+    }
+    
+    addItem(item, value);
+  };
 
   return (
     <Row className="pt-5">
@@ -24,11 +35,17 @@ const ItemDetail = ({ item }) => {
             <h4> {name}</h4>
             <StockIndicator stock={stock}></StockIndicator>
             <h3> ${price} </h3>
-            <p>
-              {description}
-            </p>
+            <p>{description}</p>
           </div>
-          {quantity > 0 ?  <Link to={'/cart'}><Button className="w-100" variant="primary">Finalizar compra </Button></Link> : <ItemCount stock={stock} onAdd={showQuantity}></ItemCount>}
+          {quantity > 0 ? (
+            <Link to={"/cart"}>
+              <Button className="w-100" variant="primary">
+                Finalizar compra
+              </Button>
+            </Link>
+          ) : (
+            <ItemCount stock={stock} onAdd={addToCart}></ItemCount>
+          )}
         </div>
       </Col>
     </Row>

@@ -6,6 +6,7 @@ class Product {
     stock;
     imgUrl;
     category;
+    quantity;
 
     constructor(id, name, description, price, stock, imgUrl, category){
         this.id = id;
