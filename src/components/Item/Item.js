@@ -14,7 +14,7 @@ const Item = ({ item }) => {
           <Card.Title>
             <Link to={`/item/${id}`}>{name}</Link>           
           </Card.Title>
-          <Card.Text><StockIndicator stock={stock}></StockIndicator></Card.Text>
+          <StockIndicator stock={stock}></StockIndicator>
           <Card.Text>${price}</Card.Text>
         </Card.Body>
       </Card>
