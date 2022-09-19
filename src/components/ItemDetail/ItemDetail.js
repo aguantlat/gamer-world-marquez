@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useContext } from "react";
 
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -11,16 +11,12 @@ import ItemCount from "../ItemCount/ItemCount";
 import StockIndicator from "../StockIndicator/StockIndicator";
 
 const ItemDetail = ({ item }) => {
-  const [quantity, setQuantity] = useState(0);
-  const { addItem } = useContext(CartContext);
-  const { name, imgUrl, price, description, stock } = item;
+  const { addItem, isInCart } = useContext(CartContext);
+  const { id, name, imgUrl, price, description, stock } = item;
   const addToCart = (value) => {
-    setQuantity(value);
-
     if (value <= 0) {
       return;
-    }
-    
+    }  
     addItem(item, value);
   };
 
@@ -37,7 +33,7 @@ const ItemDetail = ({ item }) => {
             <h3> ${price} </h3>
             <p>{description}</p>
           </div>
-          {quantity > 0 ? (
+          {isInCart(id) ? (
             <Link to={"/cart"}>
               <Button className="w-100" variant="primary">
                 Finalizar compra
