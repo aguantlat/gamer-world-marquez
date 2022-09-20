@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Container } from "react-bootstrap";
 
 import "bootstrap/dist/css/bootstrap.min.css";
+import "./firebase/config";
 import "./App.scss";
 import ItemDetailContainer from "./components/ItemDetailContainer/ItemDetailContainer";
 import Cart from "./components/Cart/Cart";
@@ -16,7 +17,6 @@ function App() {
     <CartProvider>
       <BrowserRouter>
         <NavBar />
-
         <Container>
           <Routes>
             <Route

@@ -9,7 +9,7 @@ const Item = ({ item }) => {
   return (
     <Col>
       <Card>
-        <Card.Img height={290} variant="top" src={imgUrl} />
+        <Card.Img height={360} variant="top" src={imgUrl} />
         <Card.Body>
           <Card.Title>
             <Link to={`/item/${id}`}>{name}</Link>           
