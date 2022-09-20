@@ -9,15 +9,30 @@ import { faGamepad } from "@fortawesome/free-solid-svg-icons";
 
 import "./NavBar.scss";
 
-import { accesorios, consolas, videojuegos } from "../../helpers/categories";
 import { CartContext } from "../../context/CartContext";
 
 import CartWidget from "../CartWidget/CartWidget";
+import { useEffect } from "react";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "../../firebase/config";
+import { useState } from "react";
 
 const NavBar = () => {
-  let brandName = "Gamer Store";
-  let categories = [consolas, videojuegos, accesorios];
+  const [categories, setCategories] = useState([]);
+  const brandName = "Gamer Store";
   const { cart } = useContext(CartContext);
+
+  useEffect(() => {
+    const itemsCollection = collection(db, "categories");
+
+    getDocs(itemsCollection).then((snapshot) => {
+      if (snapshot.size > 0) {
+        setCategories(
+          snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
+        );
+      }
+    });
+  }, []);
 
   return (
     <Navbar bg="secondary">

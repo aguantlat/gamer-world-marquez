@@ -1,7 +1,8 @@
+import { doc, getDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-import getItem from "../../helpers/getItem";
+import { db } from "../../firebase/config";
 
 import ItemDetail from "../ItemDetail/ItemDetail";
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
@@ -13,9 +14,13 @@ const ItemDetailContainer = () => {
 
   useEffect(() => {
     setLoading(true);
-    getItem(Number(itemId))
-      .then((item) => {
-        setItem(item);
+
+    const itemRef = doc(db, "productos", itemId)
+
+    getDoc(itemRef)
+      .then((snapshot) => {
+         if(snapshot.exists()) {
+          setItem({id: snapshot.id, ...snapshot.data()});}
       })
       .finally(() => setLoading(false));
   }, [itemId]);
