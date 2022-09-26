@@ -22,6 +22,7 @@ const ItemDetailContainer = () => {
          if(snapshot.exists()) {
           setItem({id: snapshot.id, ...snapshot.data()});}
       })
+      .catch(() => console.log('Hubo un error al intentar cargar el producto.'))
       .finally(() => setLoading(false));
   }, [itemId]);
 

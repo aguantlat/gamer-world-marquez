@@ -17,7 +17,7 @@ const ItemDetail = ({ item }) => {
     if (value <= 0) {
       return;
     }  
-    addItem(item, value);
+    addItem({ id, name, price }, value);
   };
 
   return (
