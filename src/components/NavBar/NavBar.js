@@ -31,7 +31,7 @@ const NavBar = () => {
           snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
         );
       }
-    });
+    }).catch(() => console.log('Hubo un error al intentar cargar las categorías.'));
   }, []);
 
   return (

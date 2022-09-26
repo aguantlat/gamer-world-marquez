@@ -30,6 +30,7 @@ const ItemList = () => {
           );
         }
       })
+      .catch(() => console.log('Hubo un error al intentar cargar los productos.'))
       .finally(() => {
         setLoading(false);
       });

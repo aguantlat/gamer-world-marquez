@@ -6,7 +6,7 @@ import './Cart.scss'
 import { CartContext } from "../../context/CartContext";
 
 const Cart = () => {
-  const { cart, removeItem, getTotal } = useContext(CartContext);
+  const { cart, removeItem, getTotal, clear } = useContext(CartContext);
 
   if (cart.length === 0) {
     return (
@@ -24,6 +24,10 @@ const Cart = () => {
   return (
     <div className="pt-3">
       <h4>Carrito</h4>
+      <div className="d-flex py-2 justify-content-end">
+      <Button variant="secondary" onClick={clear}>Vaciar carrito</Button>
+      </div>
+      
       <Table striped bordered hover>
         <thead>
           <tr>
@@ -64,6 +68,12 @@ const Cart = () => {
           </tr>
         </tfoot>
       </Table>
+
+      <div className="d-flex justify-content-end py-2">
+            <Link to={'/checkout'} className="btn btn-success">
+              Terminar mi compra
+            </Link>
+      </div>
     </div>
   );
 };
