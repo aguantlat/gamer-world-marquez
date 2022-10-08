@@ -13,6 +13,7 @@ import { Alert, Button } from "react-bootstrap";
 import { Navigate } from "react-router-dom";
 
 import { CartContext } from "../../context/CartContext";
+import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 import { db } from "../../firebase/config";
 
 const Checkout = () => {
@@ -23,6 +24,7 @@ const Checkout = () => {
     address: "",
   });
   const [orderId, setOrderId] = useState();
+  const [savingOrder, setSavingOrder] = useState(false);
 
   const { cart, getTotal, clear } = useContext(CartContext);
 
@@ -95,11 +97,18 @@ const Checkout = () => {
     });
 
     if (outOfStock.length === 0) {
-      batch.commit();
-      addDoc(ordersRef, order).then(({ id }) => {
-        setOrderId(id);
-        clear();
-      });
+      setSavingOrder(true);
+      batch
+        .commit()
+        .then(() => {
+          addDoc(ordersRef, order)
+            .then(({ id }) => {
+              setOrderId(id);
+              clear();
+            })
+            .finally(() => setSavingOrder(false));
+        })
+        .finally(() => setSavingOrder(false));
     }
   };
 
@@ -116,6 +125,10 @@ const Checkout = () => {
 
   if (cart.length === 0) {
     return <Navigate to="/"></Navigate>;
+  }
+
+  if (savingOrder === true) {
+    return <LoadingSpinner></LoadingSpinner>;
   }
 
   return (
