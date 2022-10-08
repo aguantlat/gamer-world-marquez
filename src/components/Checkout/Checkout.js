@@ -1,3 +1,8 @@
+import { useContext } from "react";
+import { useState } from "react";
+import { Alert, Button } from "react-bootstrap";
+import { Navigate } from "react-router-dom";
+
 import {
   addDoc,
   collection,
@@ -7,54 +12,23 @@ import {
   where,
   writeBatch,
 } from "firebase/firestore";
-import { useContext } from "react";
-import { useState } from "react";
-import { Alert, Button } from "react-bootstrap";
-import { Navigate } from "react-router-dom";
+
+import { db } from "../../firebase/config";
+import { useForm } from "../../hooks/useForm";
 
 import { CartContext } from "../../context/CartContext";
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
-import { db } from "../../firebase/config";
 
 const Checkout = () => {
-  const [values, setValues] = useState({
+  const [orderId, setOrderId] = useState();
+  const [savingOrder, setSavingOrder] = useState(false);
+  const { values, handleInputChanges } = useForm({
     name: "",
     lastname: "",
     email: "",
     address: "",
   });
-  const [orderId, setOrderId] = useState();
-  const [savingOrder, setSavingOrder] = useState(false);
-
   const { cart, getTotal, clear } = useContext(CartContext);
-
-  const handleInputChanges = (e) => {
-    setValues({ ...values, [e.target.name]: e.target.value });
-  };
-
-  const validateForm = () => {
-    if (values.name.length < 3) {
-      alert("Nombre inválido");
-      return false;
-    }
-
-    if (values.lastname.length < 3) {
-      alert("Apellido inválido");
-      return false;
-    }
-
-    if (values.email.length < 3 || !values.email.includes("@")) {
-      alert("Email inválido");
-      return false;
-    }
-
-    if (values.address.length < 3) {
-      alert("Dirección inválida");
-      return false;
-    }
-
-    return true;
-  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -110,6 +84,30 @@ const Checkout = () => {
         })
         .finally(() => setSavingOrder(false));
     }
+  };
+
+  const validateForm = () => {
+    if (values.name.length < 3) {
+      alert("Nombre inválido");
+      return false;
+    }
+
+    if (values.lastname.length < 3) {
+      alert("Apellido inválido");
+      return false;
+    }
+
+    if (values.email.length < 3 || !values.email.includes("@")) {
+      alert("Email inválido");
+      return false;
+    }
+
+    if (values.address.length < 3) {
+      alert("Dirección inválida");
+      return false;
+    }
+
+    return true;
   };
 
   if (orderId) {
