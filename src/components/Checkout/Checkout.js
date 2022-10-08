@@ -1,3 +1,8 @@
+import { useContext } from "react";
+import { useState } from "react";
+import { Alert, Button } from "react-bootstrap";
+import { Navigate } from "react-router-dom";
+
 import {
   addDoc,
   collection,
@@ -7,52 +12,23 @@ import {
   where,
   writeBatch,
 } from "firebase/firestore";
-import { useContext } from "react";
-import { useState } from "react";
-import { Alert, Button } from "react-bootstrap";
-import { Navigate } from "react-router-dom";
+
+import { db } from "../../firebase/config";
+import { useForm } from "../../hooks/useForm";
 
 import { CartContext } from "../../context/CartContext";
-import { db } from "../../firebase/config";
+import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 
 const Checkout = () => {
-  const [values, setValues] = useState({
+  const [orderId, setOrderId] = useState();
+  const [savingOrder, setSavingOrder] = useState(false);
+  const { values, handleInputChanges } = useForm({
     name: "",
     lastname: "",
     email: "",
     address: "",
   });
-  const [orderId, setOrderId] = useState();
-
   const { cart, getTotal, clear } = useContext(CartContext);
-
-  const handleInputChanges = (e) => {
-    setValues({ ...values, [e.target.name]: e.target.value });
-  };
-
-  const validateForm = () => {
-    if (values.name.length < 3) {
-      alert("Nombre inválido");
-      return false;
-    }
-
-    if (values.lastname.length < 3) {
-      alert("Apellido inválido");
-      return false;
-    }
-
-    if (values.email.length < 3 || !values.email.includes("@")) {
-      alert("Email inválido");
-      return false;
-    }
-
-    if (values.address.length < 3) {
-      alert("Dirección inválida");
-      return false;
-    }
-
-    return true;
-  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -95,12 +71,43 @@ const Checkout = () => {
     });
 
     if (outOfStock.length === 0) {
-      batch.commit();
-      addDoc(ordersRef, order).then(({ id }) => {
-        setOrderId(id);
-        clear();
-      });
+      setSavingOrder(true);
+      batch
+        .commit()
+        .then(() => {
+          addDoc(ordersRef, order)
+            .then(({ id }) => {
+              setOrderId(id);
+              clear();
+            })
+            .finally(() => setSavingOrder(false));
+        })
+        .finally(() => setSavingOrder(false));
     }
+  };
+
+  const validateForm = () => {
+    if (values.name.length < 3) {
+      alert("Nombre inválido");
+      return false;
+    }
+
+    if (values.lastname.length < 3) {
+      alert("Apellido inválido");
+      return false;
+    }
+
+    if (values.email.length < 3 || !values.email.includes("@")) {
+      alert("Email inválido");
+      return false;
+    }
+
+    if (values.address.length < 3) {
+      alert("Dirección inválida");
+      return false;
+    }
+
+    return true;
   };
 
   if (orderId) {
@@ -116,6 +123,10 @@ const Checkout = () => {
 
   if (cart.length === 0) {
     return <Navigate to="/"></Navigate>;
+  }
+
+  if (savingOrder === true) {
+    return <LoadingSpinner></LoadingSpinner>;
   }
 
   return (

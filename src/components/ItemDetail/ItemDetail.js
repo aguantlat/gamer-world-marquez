@@ -16,7 +16,7 @@ const ItemDetail = ({ item }) => {
   const addToCart = (value) => {
     if (value <= 0) {
       return;
-    }  
+    }
     addItem({ id, name, price }, value);
   };
 
@@ -39,8 +39,10 @@ const ItemDetail = ({ item }) => {
                 Finalizar compra
               </Button>
             </Link>
-          ) : (
+          ) : stock ? (
             <ItemCount stock={stock} onAdd={addToCart}></ItemCount>
+          ) : (
+            <h6>Producto no disponible.</h6>
           )}
         </div>
       </Col>

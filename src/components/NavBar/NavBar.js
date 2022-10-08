@@ -10,29 +10,14 @@ import { faGamepad } from "@fortawesome/free-solid-svg-icons";
 import "./NavBar.scss";
 
 import { CartContext } from "../../context/CartContext";
+import { useCategories } from "../../hooks/useCategories";
 
 import CartWidget from "../CartWidget/CartWidget";
-import { useEffect } from "react";
-import { collection, getDocs } from "firebase/firestore";
-import { db } from "../../firebase/config";
-import { useState } from "react";
 
 const NavBar = () => {
-  const [categories, setCategories] = useState([]);
   const brandName = "Gamer Store";
   const { cart } = useContext(CartContext);
-
-  useEffect(() => {
-    const itemsCollection = collection(db, "categories");
-
-    getDocs(itemsCollection).then((snapshot) => {
-      if (snapshot.size > 0) {
-        setCategories(
-          snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
-        );
-      }
-    }).catch(() => console.log('Hubo un error al intentar cargar las categorías.'));
-  }, []);
+  const { categories } = useCategories();
 
   return (
     <Navbar bg="secondary">

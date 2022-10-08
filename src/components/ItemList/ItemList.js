@@ -1,40 +1,12 @@
-import { collection, getDocs, query, where } from "firebase/firestore";
-import { useEffect, useState } from "react";
 import Row from "react-bootstrap/Row";
-import { useParams } from "react-router-dom";
-import { db } from "../../firebase/config";
+
+import { useProducts } from "../../hooks/useProducts";
 
 import Item from "../Item/Item";
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 
 const ItemList = () => {
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const { categoryId } = useParams();
-
-  useEffect(() => {
-    setLoading(true);
-
-    const itemsQuery = categoryId
-      ? query(
-          collection(db, "productos"),
-          where("categoryId", "==", categoryId)
-        )
-      : collection(db, "productos");
-
-    getDocs(itemsQuery)
-      .then((snapshot) => {
-        if (snapshot.size > 0) {
-          setProducts(
-            snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
-          );
-        }
-      })
-      .catch(() => console.log('Hubo un error al intentar cargar los productos.'))
-      .finally(() => {
-        setLoading(false);
-      });
-  }, [categoryId]);
+  const { products, loading } = useProducts();
 
   return (
     <>
